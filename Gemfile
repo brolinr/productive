@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
@@ -44,7 +46,15 @@ group :development, :test do
   gem "brakeman", require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem "rubocop-rails-omakase", require: false
+  gem "rubocop-rails-omakase"
+
+  gem "rspec-rails", "~> 7.0"
+
+  gem "factory_bot_rails", "~> 6.4"
+
+  gem "simplecov", "~> 0.22.0"
+
+  gem "ffaker", "~> 2.23"
 end
 
 group :development do
@@ -52,5 +62,8 @@ group :development do
   gem "web-console"
 end
 
+group :test do
+  gem "shoulda-matchers", "~> 6.4"
+end
 
 gem "devise", "~> 4.9"
