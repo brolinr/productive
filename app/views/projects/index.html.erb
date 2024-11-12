@@ -1,0 +1,52 @@
+<div 
+  class="
+    w-12 h-12 rounded-full group hover:bg-white hover:border hover:border-emerald-400 
+    duration-300 bg-emerald-400 flex justify-center items-center absolute bottom-6 
+    right-6 z-50
+  "
+>
+  <%= link_to '+', new_project_path, class: "text-3xl lead-3 font-bold text-white group-hover:text-emerald-400 mb-1" %>
+</div>
+
+<div class="w-full p-2">
+  <% if @pinned_projects.blank? && @unpinned_projects.blank? %>
+    <div class="my-5 text-gray-500 border-4 rounded-lg w-fit md:w-2/5 mx-auto border-dashed p-4 flex flex-row gap-2 border-slate-700 shadow-xl">
+      <div class="w-fit mx-auto">
+        <h1 class="font-bold text-slate-600 text-xl">No Projects yet!</h1>
+        <p class="rounded-full px-2 py-1 bg-emerald-400 my-3 text-white font-bold text-center">
+          Create a project
+        </p>
+      </div>
+    </div>
+  <% end %>
+  
+  
+  <h1 class="text-3xl font-semibold text-center">Projects</h1>
+
+  <% if @pinned_projects.present? %>
+    <div class="flex flex-row gap-1 items-center my-4 w-full">
+      <hr class="bg-emerald-400 w-full">
+        <h1 class="p-1 bg-slate-400 rounded text-white text-sm uppercase font-bold">Pinned</h1>
+      <hr class="bg-emerald-400 w-full">
+    </div>
+
+    <div class="my-4 grid grid-cols-1 md:grid-cols-3 gap-2" id="pinned">
+      <% @pinned_projects.each do |project| %>
+        <%= render 'card', locales: { project: project, pinned: true } %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @unpinned_projects.present? %>
+    <div class="flex flex-row gap-1 items-center my-4 w-full">
+      <hr class="bg-emerald-400 w-full">
+        <h1 class="p-1 bg-slate-400 rounded text-white text-sm uppercase font-bold">Unpinned</h1>
+      <hr class="bg-emerald-400 w-full">
+    </div>
+    <div class="my-4 grid grid-cols-1 md:grid-cols-3 gap-2" id="unpinned">
+      <% @unpinned_projects.each do |project| %>
+        <%= render 'card', locales: { project: project, pinned: false } %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

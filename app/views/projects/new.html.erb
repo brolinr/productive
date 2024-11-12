@@ -1,0 +1,136 @@
+
+<div class="mx-auto md:w-4/5 p-4" data-controller="new-user-form">
+  <div class="flex flex-col gap-y-3 py-5 mb-4">
+    <div>
+      <h2 class="text-xl lead-3 font-semibold text-gray-900">Project Information</h2>
+      <p class="text-sm/6 text-gray-600 lead-3">Add project information.</p>
+    </div>
+
+    <div class="md:w-1/2 flex flex-col gap-1">
+      <label for="username" class="block text-sm/6 font-medium text-gray-900">Name</label>
+      <input type="text" class="border-1 bg-white text-gray-900 placeholder:text-gray-400 border-slate-400 rounded">
+    </div>
+
+    <div class="w-full flex flex-col gap-1">
+      <label for="username" class="block text-sm/6 font-medium text-gray-900">Description</label>
+      <textarea class="border-1 bg-white text-gray-900 placeholder:text-gray-400 border-slate-400 rounded"></textarea>
+    </div>
+  </div>
+  <hr>
+
+  <div class="flex flex-col gap-y-3 py-5 mb-4">
+    <div>
+      <h2 class="text-xl lead-3 font-semibold text-gray-900">Project features</h2>
+      <p class="text-sm/6 text-gray-600 lead-3">Select the features you would like to use for this project.</p>
+    </div>
+
+    <div class="w-full flex flex-row gap-2">
+      <input type="checkbox" class="border-1 mt-1 bg-white h-4 w-4 text-gray-900 placeholder:text-gray-400 border-slate-400 rounded">
+      <div class="text-sm/6">
+        <label for="comments" class="font-medium text-gray-900">Message board</label>
+        <p class="text-gray-500">Post anouncements, pitch ideas, and hold discussions on topics.</p>
+      </div>
+    </div>
+
+    <div class="w-full flex flex-row gap-2">
+      <input type="checkbox" class="border-1 mt-1 bg-white h-4 w-4 text-gray-900 placeholder:text-gray-400 border-slate-400 rounded">
+      <div class="text-sm/6">
+        <label for="comments" class="font-medium text-gray-900">Chats</label>
+        <p class="text-gray-500">Directly communicate with other users within the project.</p>
+      </div>
+    </div>
+
+    <div class="w-full flex flex-row gap-2">
+      <input type="checkbox" class="border-1 mt-1 bg-white h-4 w-4 text-gray-900 placeholder:text-gray-400 border-slate-400 rounded">
+      <div class="text-sm/6">
+        <label for="comments" class="font-medium text-gray-900">Todo list</label>
+        <p class="text-gray-500">Create as many lists as your project needs and populate them with tasks you can assign to users.</p>
+      </div>
+    </div>
+
+    <div class="w-full flex flex-row gap-2">
+      <input type="checkbox" class="border-1 mt-1 bg-white h-4 w-4 text-gray-900 placeholder:text-gray-400 border-slate-400 rounded">
+      <div class="text-sm/6">
+        <label for="comments" class="font-medium text-gray-900">Event scheduler</label>
+        <p class="text-gray-500">Save dates for your one time and regular events.</p>
+      </div>
+    </div>
+
+    <div class="w-full flex flex-row gap-2">
+      <input type="checkbox" class="border-1 mt-1 bg-white h-4 w-4 text-gray-900 placeholder:text-gray-400 border-slate-400 rounded">
+      <div class="text-sm/6">
+        <label for="comments" class="font-medium text-gray-900">Kanban board</label>
+        <p class="text-gray-500">Easy to use kanaban tool with customizable flow, designed for reactive work.</p>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="flex flex-col gap-y-3 py-5 mb-4" data-controller="popup-modal">
+    <div>
+      <h2 class="text-xl lead-3 font-semibold text-gray-900">Project users</h2>
+      <p class="text-sm/6 text-gray-600 lead-3">Add users for this project.</p>
+    </div>
+
+    <div id="add-users" class="w-full flex justify-center">
+      <span data-action="click->popup-modal#open" class="px-3 py-1 h-fit w-fit cursor-pointer rounded bg-emerald-400 flex items-center justify-center text-white font-bold">
+        New user
+      </span>
+    </div>
+
+    <div id="add-user-form" data-popup-modal-target="modal" data-action="click->popup-modal#handleOutsideClick" class="fixed inset-0 flex hidden items-center justify-center z-50">
+      <div class="flex flex-col gap-4 my-4 bg-white border rounded-lg p-5">
+        <div class="w-full flex gap-2 flex-row">
+          <div class="w-1/2">
+            <label for="country" class="block text-sm/6 font-medium text-gray-900">Email address</label>
+            <div class="mt-2">
+              <input placeholder="test@test.com" class="border-1 bg-white text-gray-900 placeholder:text-gray-400 border-slate-400 rounded w-full">
+            </div>
+          </div>
+
+          <div class="w-1/2">
+            <label for="country" class="block text-sm/6 font-medium text-gray-900">Role</label>
+            <div class="mt-2">
+              <select class="border-1 bg-white text-gray-900 placeholder:text-gray-400 border-slate-400 rounded w-full">
+                <option>Manager</option>
+                <option>Member</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-row gap-2 w-fit">
+          <button type="button" data-action="click->popup-modal#close" class="px-4 py-2 bg-gray-200 rounded">Cancel</button>
+          <button data-action="click->new-user-form#add_user" class="px-3 py-2 h-fit w-fit rounded bg-emerald-400 mx-auto my-2 text-white font-bold">
+            Add user
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="added-users" class="">
+      <div class="project_user w-full flex flex-row gap-4">
+        <div class="w-4/5 flex gap-2 flex-row">
+          <div class="w-1/2">
+            <label for="country" class="block text-sm/6 font-medium text-gray-900">Email address</label>
+            <div class="mt-2">
+              <input value=<%= current_user.email %> disabled class="border-1 bg-white text-gray-900 placeholder:text-gray-400 border-slate-400 rounded w-full">
+            </div>
+          </div>
+
+          <div class="w-1/2">
+            <label for="country" class="block text-sm/6 font-medium text-gray-900">Role</label>
+            <div class="mt-2">
+              <select class="border-1 bg-white text-gray-900 placeholder:text-gray-400 border-slate-400 rounded w-full">
+                <option>Manager</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="w-1/5 flex items-center justify-center pt-6" data-action="click->new-user-form#remove">
+          <span class="w-8 h-8 rounded-full bg-rose-400 flex items-center justify-center text-white font-bold">-</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+</div>

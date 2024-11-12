@@ -1,0 +1,67 @@
+<div class="md:w-4/5 rounded border-b-0 border mx-auto relative p-4 text-center">
+  <span class="font-semibold text-lg tracking-wide text-indigo-400">
+    <% @breadcrumb_links.each_with_index do |link, index| %>
+      <span>
+        <%= link_to link[:text].truncate(17), link[:path] %>
+        <%= (index != (@breadcrumb_links.count - 1)) ? " › " : '' %>
+      </span>
+    <% end %>
+  </span>
+</div>
+
+<div class="md:w-[90%] shadow-2xl rounded-xl border mx-auto relative">
+  <% unless @no_header %>
+    <div class="w-full border-b p-4 grid gap-2 md:grid-cols-5">
+      <div class="col-span-1 flex flex-row gap-4 items-center md:justify-start justify-center">
+        <% if @action_button.present? %>
+          <%= link_to @action_button[:text], @action_button[:path], class: "w-fit rounded-full bg-emerald-400 flex flex-row gap-1 items-center text-white py-1 px-3" %>
+        <% end %>
+        <div class="md:hidden block">
+          <div class="relative z-50">
+            <div
+              class="duration-300 w-7 h-7 border-2 p-2 border-orange-400 hover:bg-orange-400 hover:text-white rounded-full flex items-center justify-center text-orange-400 cursor-pointer"
+            >
+            </div>
+
+            <div class="absolute left-2/5 transform -translate-x-1/2 mt-2 bg-white border border-gray-200 shadow-lg rounded-lg p-2 w-28 hidden">
+              <ul class="flex flex-col items-start">
+                <li class="p-1 rounded hover:bg-gray-100 w-full flex flex-row items-center gap-2">
+                  Edit
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center col-span-3">
+        <h1 class="font-bold text-slate-800 text-3xl tracking-tight capitalize">
+          <%= @heading_text %>
+        </h1>
+        <p class="text-slate-600 text-base"><%= @paragraph %></p>
+      </div>
+      <div class="col-span-1 md:flex justify-end items-center hidden">
+        <div class="relative z-50">
+          <div
+            class="duration-300 w-7 h-7 border-2 border-orange-400 hover:bg-orange-400 hover:text-white rounded-full flex items-center justify-center text-orange-400 cursor-pointer"
+            onClick={toggleOptions}
+          >
+            <Icon
+              path={mdiDotsHorizontal}
+              size={0.8}
+              color="currentColor"
+            />
+          </div>
+
+          <div class="absolute left-2/5 transform -translate-x-1/2 mt-2 bg-white border border-gray-200 shadow-lg rounded-lg p-2 w-28 hidden">
+            <ul class="flex flex-col items-start">
+              <li class="p-1 rounded hover:bg-gray-100 w-full flex flex-row items-center gap-2">
+                Edit
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <div class="w-full p-5 overflow-auto"><%= content %></div>
+</div>

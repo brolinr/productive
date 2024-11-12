@@ -1,9 +1,31 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+15.times do
+  FactoryBot.create(:user, password: 'password', password_confirmation: 'password')
+end
+
+user = FactoryBot.create(:user, email: 'test@test.com', password: 'password', password_confirmation: 'password')
+4.times do
+  project = FactoryBot.create(:project, user: user)
+  message_board = FactoryBot.create(:message_board, project: project)
+
+  FactoryBot.create(:project_user, project: project, user: user, invite_status: 'accepted')
+
+  rejected = User.where(id: [ 14, 15 ])
+  pending= User.where(id: [ 12, 13 ])
+  accepted = User.limit(10)
+
+  rejected.each do |user|
+    FactoryBot.create(:project_user, project: project, user: user, invite_status: 'rejected')
+  end
+
+  pending.each do |user|
+    FactoryBot.create(:project_user, project: project, user: user, invite_status: 'pending')
+  end
+
+  accepted.each do |user|
+    FactoryBot.create(:project_user, project: project, user: user, invite_status: 'accepted')
+  end
+
+  15.times do
+    FactoryBot.create(:message, room: message_board, sender: project.project_users.order('RANDOM()').first)
+  end
+end

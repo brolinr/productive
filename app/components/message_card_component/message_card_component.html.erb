@@ -1,0 +1,29 @@
+<a class="hover:bg-slate-100 w-full" href=<%= project_message_board_path(@message) %>>
+  <div class="w-full flex flex-col gap-2">
+    <div class="md:w-full p-2 flex flex-row md:grid md:grid-cols-8 gap-2 mx-auto shadow rounded-lg border">
+      <div class="col-span-1 flex pt-4">
+        <div class="mx-auto bg-emerald-400 rounded-full md:h-16 md:w-16 w-10 h-10 flex items-center justify-center">
+          <span class="font-bold text-white text-2xl">
+            <%= @message.sender.user.name.split(' ')[0, 2].map(&:first).join %>
+          </span>
+        </div>
+      </div>
+      <div class="col-span-6 py-1">
+        <h1 class="text-2xl">
+          <%= @message.title %>
+        </h1>
+        <p class="text-sm md:text-base font-normal">
+          <span class="text-slate-500 font-semibold">
+            Posted by <%= @message.sender.user.name %>
+          </span>
+          <span class="text-slate-600">
+            <%= @message.content.to_plain_text.truncate(150) %>
+          </span>
+        </p>
+        <p class="text-slate-500 text-sm">
+          <%= time_ago_in_words(@message.created_at) %> ago
+        </p>
+      </div>
+    </div>
+  </div>
+</a>

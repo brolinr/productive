@@ -1,0 +1,33 @@
+<%= render(FeatureWrapperComponent.new(breadcrumb_links: @breadcrumb_links, heading_text: 'New message')) do %>
+
+  <div class="w-full" data-controller="popup-modal">
+    <%= form_with(model: Message.new, url: project_messages_path, data: { turbo: false } ) do |form| %>
+      <%= form.text_field :title, placeholder: 'Type the title...', class: 'outline-none w-full border-none focus:outline-none focus:border-none focus:ring-0 rounded text-4xl font-bold mb-4' %>
+      
+      <%= form.rich_text_area :content, placeholder: 'Start writing...', class: 'outline-none w-full border-none focus:outline-none focus:border-none focus:ring-0 my-3' %>
+      
+      <%= form.submit value: 'Save as draft', name: "draft", class: 'py-1 px-3 font-semibold text-white bg-emerald-400 rounded-full mt-4' %>
+      <%= form.submit 'Post message', name: "draft", class: 'py-1 px-3 font-semibold border border-emerald-400 text-emerald-400 rounded-full mt-4' %>
+      <button type="button" data-action="click->popup-modal#open" class="py-1 px-3 font-semibold border border-emerald-400 text-emerald-400 rounded-full mt-4">
+        Schedule post
+      </button>
+      <p class="text-slate-700 mt-1 text-sm">Or, <%= link_to 'Discard changes', project_message_boards_path, class: 'underline underline-offset-2' %></p>
+
+      <div data-popup-modal-target="modal" class="fixed inset-0 flex items-center justify-center z-50" data-action="click->popup-modal#handleOutsideClick">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <h3 class="text-lg font-semibold mb-4">Schedule Post</h3>
+          <p class="text-xs">Pick date and time</p>
+          <div class="flex flex-row gap-2 mb-4">
+            <%= form.datetime_field :scheduled_date_time, class: 'border rounded', placeholder: 'Select a date' %>
+          </div>
+          
+          <div class="flex">
+            <button type="button" data-action="click->popup-modal#close" class="mr-2 px-4 py-2 bg-gray-200 rounded">Cancel</button>
+            <%= form.submit 'Schedule', name: "draft", class: 'py-1 px-3 font-semibold text-white bg-emerald-400 rounded-full' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+<% end %>

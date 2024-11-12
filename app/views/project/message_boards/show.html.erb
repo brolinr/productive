@@ -1,0 +1,54 @@
+<%= render(FeatureWrapperComponent.new(breadcrumb_links: @breadcrumb_links, no_header: '')) do %>
+  <% if @message.draft? %>
+  <div class="w-full flex justify-center">
+    <span class="bg-amber-400 px-4 font-semibold mx-auto w-fit mb-2 rounded-full text-white">
+      Draft
+    </span>
+  </div>
+    
+  <% end %>
+  <h1 class="text-4xl font-bold text-center mb-2"><%= @message.title %></h1>
+
+  <div class="w-fit p-2 flex items-center mx-auto gap-2 border-t">
+    <span class="w-10 h-10 text-white font-bold bg-emerald-400 rounded-full flex items-center text-center">
+      <span class="mx-auto">
+        <%= @message.sender.user.name.split(' ')[0, 2].map(&:first).join %>
+      </span>
+    </span>
+
+    <span class="text-lg racking-tight">
+      <%= @message.sender.user.name %>
+    </span>
+  </div>
+
+  <div class="md:w-4/5 my-5 container mx-auto">
+    <div class="hover:bg-gray-100 p-2 rounded">
+      <%= @message.content %>
+    </div>
+    
+
+    <% unless @message.draft? %>
+      <hr class="w-full my-5">
+
+      <div class="flex flex-row gap-2">
+        <div class="w-10 h-10 rounded-full bg-emerald-400 text-white flex justify-center items-center font-bold ">
+          <span>
+            <%= current_user.name.split(' ')[0, 2].map(&:first).join %>
+          </span>
+        </div>
+        <div class="w-full">
+          <%= form_with(url: project_message_comments_path(@message), data: { turbo: false } ) do |form| %>
+            <%= form.text_area :content, placeholder: 'Add a comment here', class: 'outline-none w-full border-none focus:outline-none focus:border-none focus:ring rounded focus:ring-emerald-400 h-20' %>
+            <%= form.submit 'Submit', class: 'py-1 px-2 font-bold text-white bg-emerald-400 rounded my-4' %>
+          <% end %>
+        </div>
+      </div>
+
+      <%= render ChatDayComponent.new(display_date(Time.current)) %>
+
+      <div class="flex flex-col gap-4">
+        <%= render ChatMessageComponent.with_collection(6.times.map(&:to_s), sender: FFaker::Name.name, time: 3.hours.ago, message: FFaker::Lorem.paragraph) %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,106 @@
+/*
+ * Provides a drop-in pointer for the default Trix stylesheet that will format the toolbar and
+ * the trix-editor content (whether displayed or under editing). Feel free to incorporate this
+ * inclusion directly in any other asset bundle and remove this file.
+ *
+ *= require trix
+*/
+
+/*
+ * We need to override trix.css’s image gallery styles to accommodate the
+ * <action-text-attachment> element we wrap around attachments. Otherwise,
+ * images in galleries will be squished by the max-width: 33%; rule.
+*/
+/* Customize Trix toolbar */
+trix-toolbar {
+  background-color: #ffffff; /* White background */
+  border-top: 1px solid #e5e7eb; /* Light gray top border */
+  border-bottom: 1px solid #e5e7eb; /* Light gray bottom border */
+  border-left: none;
+  border-right: none;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+/* Style for button group (no inner border, black icons) */
+trix-toolbar .trix-button-group {
+  display: flex;
+  border: none;
+  margin-bottom: 0;
+}
+
+trix-toolbar .trix-button:not(:first-child) {
+  border-left: none;
+}
+
+trix-toolbar .trix-button {
+  position: relative;
+  float: left;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.75em;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0 0;
+  margin: 0;
+  outline: none;
+  border: none;
+  border-bottom: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Button styles: black icons, no shadow */
+trix-toolbar .trix-button {
+  color: #000; /* Black color for icons */
+  box-shadow: none;
+  background-color: transparent; /* Transparent background */
+}
+
+trix-toolbar .trix-button.trix-active,
+trix-toolbar .trix-button:hover {
+  @apply text-black bg-gray-100; /* Subtle hover background */
+}
+
+trix-editor h1 {
+  font-size: 1.25rem !important;
+  line-height: 1.25rem !important;
+  @apply tw-leading-5 tw-font-semibold tw-mb-4 tw-text-2xl;
+}
+
+trix-editor a:not(.no-underline) {
+  @apply underline !important;
+}
+
+trix-editor a:visited {
+  color: green;
+}
+
+trix-editor ul {
+  list-style-type: disc !important;
+  padding-left: 1rem !important;
+}
+
+trix-editor ol {
+  list-style-type: decimal !important;
+  padding-left: 1rem !important;
+}
+
+trix-editor pre {
+  display: inline-block !important;
+  width: 100% !important;
+  vertical-align: top !important;
+  font-family: monospace !important;
+  font-size: 1.5em !important;
+  padding: 0.5em !important;
+  white-space: pre !important;
+  background-color: #eee !important;
+  overflow-x: auto !important;
+}
+
+trix-editor blockquote {
+  border: 0 solid #ccc !important;
+  border-left-width: 0px !important;
+  border-left-width: 0.3em !important;
+  margin-left: 0.3em !important;
+  padding-left: 0.6em !important;
+}

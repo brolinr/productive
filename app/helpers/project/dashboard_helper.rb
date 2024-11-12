@@ -1,0 +1,2 @@
+module Project::DashboardHelper
+end

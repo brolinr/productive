@@ -1,0 +1,68 @@
+<%
+  links = [
+  { text: "Projects", path: "/", icon: "+" },
+  { text: "inbox", path: "", icon: "+" },
+  {
+    text: "Task manager",
+    path: "/task_manager",
+    icon: "+",
+  },
+  {
+    text: "Event manager",
+    path: "/event_manager",
+    icon: "+",
+  },
+  {
+    text: "Message board",
+    path: project_message_boards_path,
+    icon: "+",
+  },
+];
+%>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Productive" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <%= render 'shared/toast', locales: { toasts: [notice, alert] } %>
+
+    <main class="h-screen md:grid grid-cols-12">
+      <% if current_project %>
+        <aside class="md:h-screen col-span-1 z-50 flex items-center p-2 justify-center md:justify-start">
+          <div class="md:flex-col md:fixed flex gap-4 text-white rounded-t-full md:mt-7 rounded-b-full p-4 lg:mx-4 bg-indigo-400 w-4/5 md:w-fit justify-center items-center">
+            <% links.each do |link| %>
+              <a
+                href="<%= link[:path] %>"
+                class="relative group rounded-full p-2 duration-300"
+              >
+                <h1 class="text-4xl mb-1">+</h1>
+                <span class="absolute md:left-full mt-4 md:mt-0 md:ml-3 top-full md:top-1/2 transform -translate-x-2 -translate-y-1/2 hidden group-hover:block text-white bg-yellow-400 rounded-full py-1 px-2 text-xs whitespace-nowrap">
+                  <%= link[:text] %>
+                </span>
+              </a>
+            <% end %>
+          </div>
+        </aside>
+      <% end %>
+      <div class="col-span-11 md:pt-16">
+        <%= yield %>
+      </div>
+    </main>
+  </body>
+</html>
