@@ -1,0 +1,35 @@
+<%= render(FeatureWrapperComponent.new(breadcrumb_links: @breadcrumb_links, action_button: @action_button, heading_text: @other_member.first)) do %>
+  <div class="relative w-full h-screen">
+    <div class="w-full flex flex-col gap-2 h-screen overflow-auto pb-32">
+      <% @messages.each do |message| %>
+        <%= render ChatDayComponent.new(display_date(message[0])) %>
+        <div class="w-full p-4 flex flex-col gap-2">
+          <% message[1].each do |message| %>
+            <% is_current_user = message.sender.user_name == @current_project_user.user_name %>
+            <div class="flex <%= is_current_user ? 'justify-end' : 'justify-start' %>">
+              <div class="flex flex-row gap-2 w-4/5">
+                <div class="<%= is_current_user ? 'bg-emerald-100' : 'bg-slate-100' %> py-2 px-3 w-fit rounded-lg">
+                  <p class="font-bold text-sm">
+                    <%= is_current_user ? 'You' : message.sender.user_name %>
+                    <span class="text-xs font-normal text-slate-500">
+                      <%= message.created_at.strftime("%H:%M") %>
+                    </span>
+                  </p>
+
+                  <span class="text-sm">
+                    <%= message.content %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <div class="flex flex-row gap-1 items-center fixed bottom-3 w-[90%] md:w-4/5">
+      <textarea name="message" class="outline-none w-full border-none ring-1 w-4/5  focus:outline-none focus:border-none focus:ring rounded focus:ring-emerald-400" ></textarea>
+      <button disabled="disabled" class="w-12 h-12 rounded-lg bg-emerald-400 text-white font-bold">+</button>
+      <button disabled="disabled" class="w-12 h-12 rounded-lg bg-emerald-400 text-white font-bold">-</button>
+    </div>
+  </div>
+<% end %>

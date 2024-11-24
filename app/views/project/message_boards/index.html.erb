@@ -1,5 +1,14 @@
 <%= render(FeatureWrapperComponent.new(breadcrumb_links: @breadcrumb_links, action_button: @action_button, heading_text: 'Message Board')) do %>
-  <% if false %>
+  <% if @current_project_user.messages.where(room_type: 'MessageBoard', draft: true).any? %>
+    <div class="text-center">
+      <p class="text-gray-500 text-base">
+        You have drafted messages. 
+        <%= link_to 'Take a look', drafts_project_message_boards_path, class: 'underline underline-offset-2 border-slate-400 text-slate-600' %>
+      </p>
+    </div>
+  <% end %>
+
+  <% if @current_project.message_board.messages.where(draft: false).blank? %>
     <div class="my-5 text-gray-500 border-4 rounded-lg w-fit md:w-2/5 mx-auto border-dashed p-4 flex flex-row gap-2 border-slate-700 shadow-xl">
       <div class="w-fit">
         <h1 class="font-bold text-slate-600 text-xl">No messages yet!</h1>

@@ -1,0 +1,31 @@
+<div class="border rounded-lg col-span-1 p-4 flex justify-start flex-col">
+  <div class="flex flex-row items-center justify-between space-y-0">
+    <h1 class="text-lg font-medium"><%= @project.name %></h1>
+    <button class="hover:bg-slate-200 duration-300 flex items-center justify-center p-2 rounded">
+      <% if @project.pinned? %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pin">
+          <path d="M12 17v5"/>
+          <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>
+        </svg>
+      <% else %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pin-off">
+          <path d="M12 17v5"/><path d="M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89"/>
+          <path d="m2 2 20 20"/>
+          <path d="M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11"/>
+        </svg>
+      <% end %>
+    </button>
+  </div>
+
+  <p class="text-sm text-slate-400 mb-4">
+    <%= @project.description.truncate(160)%>
+  </p>
+  
+  <%= link_to project_path(@project), class: 'text-white w-full py-2 px-3 flex items-center justify-center rounded bg-emerald-400 hover:bg-emerald-400/70 flex flex-row gap-4' do %>
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open">
+      <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>
+    </svg>
+
+    <span class="">Open Project</span>
+  <% end %>
+</div>

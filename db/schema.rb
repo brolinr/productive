@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_02_184045) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_24_183223) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,22 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_02_184045) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "chat_members", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.bigint "project_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_chat_members_on_chat_id"
+    t.index ["project_user_id"], name: "index_chat_members_on_project_user_id"
+  end
+
+  create_table "chats", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_chats_on_project_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.bigint "message_id", null: false
@@ -60,6 +76,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_02_184045) do
     t.datetime "updated_at", null: false
     t.index ["message_id"], name: "index_comments_on_message_id"
     t.index ["project_user_id"], name: "index_comments_on_project_user_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "title"
+    t.date "date"
+    t.time "time"
+    t.bigint "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_events_on_project_id"
   end
 
   create_table "message_boards", force: :cascade do |t|
@@ -83,6 +109,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_02_184045) do
     t.index ["sender_type", "sender_id"], name: "index_messages_on_sender"
   end
 
+  create_table "notifees", force: :cascade do |t|
+    t.string "notifyable_type", null: false
+    t.bigint "notifyable_id", null: false
+    t.bigint "project_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["notifyable_type", "notifyable_id"], name: "index_notifees_on_notifyable"
+    t.index ["project_user_id"], name: "index_notifees_on_project_user_id"
+  end
+
   create_table "project_users", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.bigint "user_id", null: false
@@ -104,6 +140,50 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_02_184045) do
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
+  create_table "task_groups", force: :cascade do |t|
+    t.string "title"
+    t.string "card_color"
+    t.bigint "todo_list_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["todo_list_id"], name: "index_task_groups_on_todo_list_id"
+  end
+
+  create_table "task_notifees", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.bigint "project_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_user_id"], name: "index_task_notifees_on_project_user_id"
+    t.index ["task_id"], name: "index_task_notifees_on_task_id"
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.string "title"
+    t.date "due_date"
+    t.boolean "complete"
+    t.string "assignee_type"
+    t.bigint "assignee_id"
+    t.string "list_type", null: false
+    t.bigint "list_id", null: false
+    t.string "group_type"
+    t.bigint "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignee_type", "assignee_id"], name: "index_tasks_on_assignee"
+    t.index ["group_type", "group_id"], name: "index_tasks_on_group"
+    t.index ["list_type", "list_id"], name: "index_tasks_on_list"
+  end
+
+  create_table "todo_lists", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.bigint "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_todo_lists_on_project_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -119,10 +199,19 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_02_184045) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "chat_members", "chats"
+  add_foreign_key "chat_members", "project_users"
+  add_foreign_key "chats", "projects"
   add_foreign_key "comments", "messages"
   add_foreign_key "comments", "project_users"
+  add_foreign_key "events", "projects"
   add_foreign_key "message_boards", "projects"
+  add_foreign_key "notifees", "project_users"
   add_foreign_key "project_users", "projects"
   add_foreign_key "project_users", "users"
   add_foreign_key "projects", "users"
+  add_foreign_key "task_groups", "todo_lists"
+  add_foreign_key "task_notifees", "project_users"
+  add_foreign_key "task_notifees", "tasks"
+  add_foreign_key "todo_lists", "projects"
 end

@@ -1,52 +1,55 @@
-<div 
-  class="
-    w-12 h-12 rounded-full group hover:bg-white hover:border hover:border-emerald-400 
-    duration-300 bg-emerald-400 flex justify-center items-center absolute bottom-6 
-    right-6 z-50
-  "
->
-  <%= link_to '+', new_project_path, class: "text-3xl lead-3 font-bold text-white group-hover:text-emerald-400 mb-1" %>
-</div>
+<div class="px-4 md:px-6 container mx-auto my-4">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold tracking-tighter">Your Projects</h1>
+    <%= link_to 'New Project', new_project_path, class: 'py-2 px-3 rounded bg-emerald-400 font-medium text-white'%>
+  </div>
 
-<div class="w-full p-2">
-  <% if @pinned_projects.blank? && @unpinned_projects.blank? %>
-    <div class="my-5 text-gray-500 border-4 rounded-lg w-fit md:w-2/5 mx-auto border-dashed p-4 flex flex-row gap-2 border-slate-700 shadow-xl">
-      <div class="w-fit mx-auto">
-        <h1 class="font-bold text-slate-600 text-xl">No Projects yet!</h1>
-        <p class="rounded-full px-2 py-1 bg-emerald-400 my-3 text-white font-bold text-center">
-          Create a project
-        </p>
+  <% if @unpinned_projects.blank? && @pinned_projects.blank? %>
+    <div class="flex flex-col items-center justify-center text-center py-16">
+      <div class="bg-slate-200 flex justify-center items-center rounded-full p-6 mb-6">
+        <div class="w-12 h-12 flex justify-center items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text">
+            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+            <path d="M10 9H8"/>
+            <path d="M16 13H8"/>
+            <path d="M16 17H8"/>
+          </svg>
+        </div>
       </div>
-    </div>
-  <% end %>
-  
-  
-  <h1 class="text-3xl font-semibold text-center">Projects</h1>
+      <h2 class="text-2xl font-semibold mb-2">No projects yet</h2>
+      <p class="text-muted-foreground mb-6 max-w-md">
+        Get started by creating your first project. You can organize your work, collaborate with others, and track your progress.
+      </p>
 
-  <% if @pinned_projects.present? %>
-    <div class="flex flex-row gap-1 items-center my-4 w-full">
-      <hr class="bg-emerald-400 w-full">
-        <h1 class="p-1 bg-slate-400 rounded text-white text-sm uppercase font-bold">Pinned</h1>
-      <hr class="bg-emerald-400 w-full">
-    </div>
+      <%= link_to new_project_path, class: 'text-white w-fit py-2 px-3 flex items-center justify-center rounded bg-emerald-400 hover:bg-emerald-400/70 flex flex-row gap-4' do %>
+        <div class="h-5 w-5 flex justify-center items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus">
+            <path d="M5 12h14"/>
+            <path d="M12 5v14"/>
+          </svg>
+        </div>
 
-    <div class="my-4 grid grid-cols-1 md:grid-cols-3 gap-2" id="pinned">
-      <% @pinned_projects.each do |project| %>
-        <%= render 'card', locales: { project: project, pinned: true } %>
+        <span class="">Create Your First Project</span>
       <% end %>
     </div>
-  <% end %>
+  <% else%>
+    <div class="mb-8">
+      <input placeholder="Search projects..." class="border-1 text-sm bg-white text-gray-900 placeholder:text-gray-400 border-slate-400 rounded w-fit h-8" />
+    </div>
 
-  <% if @unpinned_projects.present? %>
-    <div class="flex flex-row gap-1 items-center my-4 w-full">
-      <hr class="bg-emerald-400 w-full">
-        <h1 class="p-1 bg-slate-400 rounded text-white text-sm uppercase font-bold">Unpinned</h1>
-      <hr class="bg-emerald-400 w-full">
-    </div>
-    <div class="my-4 grid grid-cols-1 md:grid-cols-3 gap-2" id="unpinned">
-      <% @unpinned_projects.each do |project| %>
-        <%= render 'card', locales: { project: project, pinned: false } %>
-      <% end %>
-    </div>
+    <% if @pinned_projects.present? %>
+      <h2 class="text-2xl font-semibold mb-4">Pinned Projects</h2>
+      <div class="grid gap-6 grid-cols-2 md:grid-cols-3 mb-8">
+        <%= render ProjectCardComponent.with_collection(@pinned_projects) %>
+      </div>
+    <% end %>
+
+    <% if @unpinned_projects.present? %>
+      <h2 class="text-2xl font-semibold mb-4">All Projects</h2>
+      <div class="grid gap-6 grid-cols-2 md:grid-cols-3">
+        <%= render ProjectCardComponent.with_collection(@unpinned_projects) %>
+      </div>
+    <% end %>
   <% end %>
 </div>

@@ -11,7 +11,7 @@ module ApplicationHelper
     elsif date.to_date == Date.tomorrow
       "Tomorrow"
     else
-      date.strftime("%A, %-d %b %Y") # e.g., Friday, 1 Nov 2024
+      date.strftime("%a, %-d %b %Y") # e.g., Friday, 1 Nov 2024
     end
   end
 

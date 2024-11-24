@@ -1,0 +1,23 @@
+<%= render(FeatureWrapperComponent.new(breadcrumb_links: @breadcrumb_links, action_button: @action_button, heading_text: 'Message board drafts')) do %>
+  <div class="w-full flex justify-center">
+    <span class="bg-amber-400 px-4 font-semibold mx-auto w-fit mb-2 rounded-full text-white">
+      Drafted messages
+    </span>
+  </div>
+
+  <% if @messages.blank? %>
+    <div class="my-5 text-gray-500 border-4 rounded-lg w-fit md:w-2/5 mx-auto border-dashed p-4 flex flex-row gap-2 border-slate-700 shadow-xl">
+      <div class="w-fit mx-auto">
+        <h1 class="font-bold text-slate-600 text-center w-full text-xl">You have no drafted messages yet!</h1>
+      </div>
+    </div>
+  <% else %>
+    <div class="w-full flex flex-col gap-2">
+      <%= render MessageCardComponent.with_collection(@messages) %>
+    </div>
+    
+    <div class="w-full flex justify-center my-5">
+      <%= pagy_nav(@pagy).html_safe if @pagy.pages > 1  %>
+    </div>
+  <% end %>
+<% end %>

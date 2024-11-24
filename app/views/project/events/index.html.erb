@@ -1,0 +1,196 @@
+<%= render(FeatureWrapperComponent.new(breadcrumb_links: @breadcrumb_links, action_button: @action_button, heading_text: 'Events')) do %>
+  <div class="flex flex-col gap-4">
+    <div id="twin-calendar-container" class="p-4 border flex justify-center items-center rounded-lg gap-2">
+      <%= render TwinCalendarComponent.new(year: params[:year], month: params[:month], selected_date: params[:selected_date]) %>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div id="today-events" class="border rounded-lg p-4 col-span-1 flex flex-col gap-2">
+        <div class="mb-4 flex justify-between">
+          <div>
+            <h3 class="text-2xl font-semibold">Events for <%= display_date(Date.parse(params[:selected_date] || Date.today.to_s)) %></h3>
+            <p class="text-slate-500 text-sm">Manage your schedule</p>
+          </div>
+          <% unless params[:selected_date] && Date.parse(params[:selected_date]) <= Date.today %>
+            <div data-controller="popup-modal">
+              <button data-action="click->popup-modal#open" class="text-white w-fit h-fit py-2 px-3 flex items-center justify-center rounded bg-emerald-400 hover:bg-emerald-400/70 flex flex-row gap-2">
+                <div class="h-5 w-5 flex justify-center items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus">
+                    <path d="M5 12h14"/>
+                    <path d="M12 5v14"/>
+                  </svg>
+                </div>
+                <span class="">New event</span>
+              </button>
+
+              <div data-popup-modal-target="modal" class="hidden bg-slate-700/60 items-center fixed inset-0 flex pt-2 justify-center z-50" data-action="click->popup-modal#handleOutsideClick">
+                <div class="bg-white p-6 rounded-lg shadow-lg border overflow-auto">
+                  <h3 class="text-2xl font-semibold mb-4">New Event</h3>
+                  <%= form_with(model: current_project.events.new, url: '#', data: { turbo: false } ) do |form| %>
+                    <div class="flex flex-col gap-1 mb-4">
+                      <%= form.label :title, class: 'text-sm' %>
+                      <%= form.text_field :title, class: 'rounded border' %>
+                    </div>
+
+                    <div class="flex flex-col gap-1 mb-4">
+                      <%= form.label :date, class: 'text-sm' %>
+                      <div class="border-b border-x rounded-lg">
+                        <%= form.date_field :date, value: Date.parse(params[:selected_date] || Date.today.to_s), class: 'bg-white w-full p-2 h-12 border' %>
+                      </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1 mb-4">
+                      <%= form.label :time, class: 'text-sm' %>
+                      <div class="border-b border-x rounded-lg">
+                        <%= form.time_field :time, class: 'bg-white w-full p-2 h-12 border' %>
+                      </div>
+                    </div>
+
+                    <div class="flex">
+                      <button type="button" data-action="click->popup-modal#close" class="mr-2 px-4 py-2 bg-gray-200 rounded">Cancel</button>
+                      <%= button_tag 'Update', name: "draft", class: 'py-1 px-3 text-white bg-emerald-400 rounded' %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <% @day_events.each do |event| %>
+          <div data-controller="popup-modal">
+            <div data-action="click->popup-modal#open" class=" cursor-pointer duration-300 p-2 flex justify-between items-center bg-slate-200 rounded-lg">
+              <div>
+                <h1 class="text-base font-medium"><%= event.title %></h1>
+                <p class="text-slate-500 text-xs"><%= event.time.strftime('%H:%m') %></p>
+              </div>
+
+              <div class="flex">
+                <% event.project_users.each_with_index do |project_user, index| %>
+                  <% if index < 3 %>
+                    <div
+                      class="w-7 h-7 border-2 border-white rounded-full text-white bg-yellow-400 duration-300 flex items-center justify-center -ml-2 first:ml-0"
+                    >
+                      <h1 class="text-sm font-semibold">
+                        <%= project_user.user.name.split('')[0].upcase %>
+                      </h1>
+                    </div>
+                  <% elsif index == 3 %>
+                    <div
+                      class="w-8 h-8 text-sm border border-white rounded-full text-slate-700 font-semibold duration-300 flex items-center justify-center bg-slate-200"
+                    >
+                      <span>+<%= current_project.project_users.count - 3 %></span>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+
+            <div data-popup-modal-target="modal" class="hidden bg-slate-700/60 items-center fixed inset-0 flex pt-2 justify-center z-50" data-action="click->popup-modal#handleOutsideClick">
+              <div class="bg-white p-6 rounded-lg shadow-lg border overflow-auto">
+                <h3 class="text-2xl font-semibold mb-4">Edit Event</h3>
+                <%= form_with(model: event, url: project_event_path(event), method: :patch, data: { turbo: false } ) do |form| %>
+                  <div class="flex flex-col gap-1 mb-4">
+                    <%= form.label :title, class: 'text-sm' %>
+                    <%= form.text_field :title, class: 'rounded border' %>
+                  </div>
+
+                  <div class="flex flex-col gap-1 mb-4">
+                    <%= form.label :date, class: 'text-sm' %>
+                    <div class="border-b border-x rounded-lg">
+                      <%= form.date_field :date, class: 'bg-white w-full p-2 h-12 border' %>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col gap-1 mb-4">
+                    <%= form.label :time, class: 'text-sm' %>
+                    <div class="border-b border-x rounded-lg">
+                      <%= form.time_field :time, value: event.time.strftime('%H:%m'), class: 'bg-white w-full p-2 h-12 border' %>
+                    </div>
+                  </div>
+
+                  <div class="flex">
+                    <button type="button" data-action="click->popup-modal#close" class="mr-2 px-4 py-2 bg-gray-200 rounded">Cancel</button>
+                    <%= button_tag 'Update', name: "draft", class: 'py-1 px-3 text-white bg-emerald-400 rounded' %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div id="this-week-events" class="border rounded-lg p-4 col-span-1 flex flex-col gap-2">
+        <div class="mb-4">
+          <h3 class="text-2xl font-semibold">Upcoming Events</h3>
+          <p class="text-slate-500 text-sm">Events for this week</p>
+        </div>
+
+        <% @this_week_events.each do |event| %>
+          <div data-controller="popup-modal">
+            <div data-action="click->popup-modal#open" class="cursor-pointer duration-300 p-2 flex justify-between items-center bg-slate-200 rounded-lg">
+              <div>
+                <h1 class="text-base font-medium"><%= event.title %></h1>
+                <p class="text-slate-500 text-xs"><%= "#{display_date(event.date)} #{event.time.strftime('%H:%m')}" %></p>
+              </div>
+
+              <div class="flex">
+                <% event.project_users.each_with_index do |project_user, index| %>
+                  <% if index < 3 %>
+                    <div
+                      class="w-7 h-7 border-2 border-white rounded-full text-white bg-yellow-400 duration-300 flex items-center justify-center -ml-2 first:ml-0"
+                    >
+                      <h1 class="text-sm font-semibold">
+                        <%= project_user.user.name.split('')[0].upcase %>
+                      </h1>
+                    </div>
+                  <% elsif index == 3 %>
+                    <div
+                      class="w-8 h-8 text-sm border border-white rounded-full text-slate-700 font-semibold duration-300 flex items-center justify-center bg-slate-200"
+                    >
+                      <span>+<%= current_project.project_users.count - 3 %></span>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+
+            <div data-popup-modal-target="modal" class="hidden bg-slate-700/60 items-center fixed inset-0 flex pt-2 justify-center z-50" data-action="click->popup-modal#handleOutsideClick">
+              <div class="bg-white p-6 rounded-lg shadow-lg border overflow-auto">
+                <h3 class="text-2xl font-semibold mb-4">Edit Event</h3>
+                <%= form_with(model: event, url: project_event_path(event), method: :patch, data: { turbo: false } ) do |form| %>
+                  <div class="flex flex-col gap-1 mb-4">
+                    <%= form.label :title, class: 'text-sm' %>
+                    <%= form.text_field :title, class: 'rounded border' %>
+                  </div>
+
+                  <div class="flex flex-col gap-1 mb-4">
+                    <%= form.label :date, class: 'text-sm' %>
+                    <div class="border-b border-x rounded-lg">
+                      <%= form.date_field :date, class: 'bg-white w-full p-2 h-12 border' %>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col gap-1 mb-4">
+                    <%= form.label :time, class: 'text-sm' %>
+                    <div class="border-b border-x rounded-lg">
+                      <%= form.time_field :time, value: event.time.strftime('%H:%m'), class: 'bg-white w-full p-2 h-12 border' %>
+                    </div>
+                  </div>
+
+                  <div class="flex">
+                    <button type="button" data-action="click->popup-modal#close" class="mr-2 px-4 py-2 bg-gray-200 rounded">Cancel</button>
+                    <%= button_tag 'Update', name: "draft", class: 'py-1 px-3 text-white bg-emerald-400 rounded' %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="w-full flex justify-center my-5">
+          <%= pagy_nav(@this_week_events_pagy).html_safe if @this_week_events_pagy.pages > 1  %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,5 @@
+<%= render(FeatureWrapperComponent.new(breadcrumb_links: @breadcrumb_links, action_button: @action_button, heading_text: 'Chats')) do %>
+  <div class="w-full flex flex-col gap-2">
+    <%= render ChatCardComponent.with_collection(@chats, current_project_user: @current_project_user) %>
+  </div>
+<% end %>

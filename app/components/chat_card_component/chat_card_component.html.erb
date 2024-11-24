@@ -1,0 +1,28 @@
+<div class="hover:bg-slate-100 w-full duration-300 hover:scale-105" href=<%= project_chat_path(@chat) %>>
+  <a href=<%= project_chat_path(@chat) %>>
+  <div class="w-full flex flex-col gap-2">
+    <div class="md:w-full p-2 flex flex-row md:grid md:grid-cols-8 gap-2 mx-auto shadow rounded-lg border">
+      <div class="col-span-1 flex pt-4">
+        <div class="mx-auto bg-emerald-400 rounded-full md:h-16 md:w-16 w-10 h-10 flex items-center justify-center">
+          <span class="font-bold text-white text-xl md:text-2xl">
+            <%= @sender.split(' ')[0, 2].map(&:first).join %>
+          </span>
+        </div>
+      </div>
+      <div class="col-span-6 py-1">
+        <h1 class="text-2xl">
+          <%= @sender %>
+        </h1>
+        <p class="text-sm md:text-base font-normal">
+          <span class="text-slate-600">
+            <%= @chat.messages.last.content.to_plain_text.truncate(150) %>
+          </span>
+        </p>
+        <p class="text-slate-500 text-sm">
+          <%= time_ago_in_words(@time) %> ago
+        </p>
+      </div>
+    </div>
+  </div>
+  </a>
+</div>

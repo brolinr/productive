@@ -1,0 +1,41 @@
+<%= render(FeatureWrapperComponent.new(breadcrumb_links: @breadcrumb_links, action_button: @action_button, heading_text: 'Todo lists')) do %>
+  <% if @todo_lists.blank? %>
+    <div class="flex flex-col items-center justify-center text-center py-16">
+      <div class="bg-slate-200 flex justify-center items-center rounded-full p-6 mb-6">
+        <div class="w-12 h-12 flex justify-center items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-list">
+            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <path d="M12 11h4"/>
+            <path d="M12 16h4"/>
+            <path d="M8 11h.01"/>
+            <path d="M8 16h.01"/>
+          </svg>
+        </div>
+      </div>
+      <h2 class="text-2xl font-semibold mb-2">No todo lists yet</h2>
+      <p class="text-muted-foreground mb-6 max-w-md">
+        Get started by creating your first todo list. Stay organized and boost your productivity!
+      </p>
+
+      <%= link_to new_project_todo_list_path, class: 'text-white w-fit py-2 px-3 flex items-center justify-center rounded bg-emerald-400 hover:bg-emerald-400/70 flex flex-row gap-4' do %>
+        <div class="h-5 w-5 flex justify-center items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus">
+            <path d="M5 12h14"/>
+            <path d="M12 5v14"/>
+          </svg>
+        </div>
+
+        <span class="">Create your first todo list</span>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <%= render TodoListCardComponent.with_collection(@todo_lists) %>
+    </div>
+
+    <div class="w-full flex justify-center my-5">
+      <%= pagy_nav(@pagy).html_safe if @pagy.pages > 1  %>
+    </div>
+  <% end %>
+<% end %>

@@ -12,9 +12,9 @@ RSpec.describe Project, type: :model do
   describe 'relations' do
     it { is_expected.to belong_to(:user) }
     it { is_expected.to have_many(:project_users).dependent(:destroy) }
+    it { is_expected.to have_many(:todo_lists).dependent(:destroy) }
     it { is_expected.to have_one(:message_board).dependent(:destroy) }
-    it { is_expected.to have_one(:todo).dependent(:destroy) }
-    it { is_expected.to have_one(:event_scheduler).dependent(:destroy) }
+    it { is_expected.to have_many(:events).dependent(:destroy) }
   end
 
   describe 'factories' do

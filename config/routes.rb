@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
   namespace :project do
-    resources :message_boards, param: :message_id, only: %i[index show]
+    resources :events, only: %i[index create update]
+    resources :todo_lists, only: %i[new index show edit update]
+    resources :chats, only: %i[index show]
+    resources :message_boards, param: :message_id, only: %i[index show] do
+      collection do
+        get "drafts"
+      end
+    end
+
     resources :messages, only: %i[new create update destroy edit] do
       resources :comments, only: %i[create destroy]
     end

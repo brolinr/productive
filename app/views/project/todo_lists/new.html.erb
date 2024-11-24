@@ -1,0 +1,17 @@
+<%= render(FeatureWrapperComponent.new(breadcrumb_links: @breadcrumb_links, heading_text: 'New list')) do %>
+  <div class="md:w-4/5 mx-auto shadow border m-4 rounded-lg">
+    <%= form_with(model: Message.new, url: project_messages_path, data: { turbo: false } ) do |form| %>
+
+      <%= form.text_field :title, placeholder: 'Type the title...', class: 'outline-none w-full border-none focus:outline-none focus:border-none focus:ring-0 rounded font-bold' %>
+      
+      <div class="border-b border-x rounded-lg m-2">
+        <%= form.rich_text_area :content, placeholder: 'Start writing...', class: 'outline-none w-full border-none focus:outline-none focus:border-none focus:ring-0' %>
+      </div>
+      <div class="border-b border-x rounded-lg p-2">
+        <%= form.submit value: 'Add todo list', name: "draft", class: 'py-1 px-3 text-base text-white bg-emerald-400 rounded-full mt-4' %>
+
+        <p class="text-slate-700 mt-1 text-sm">Or, <%= link_to 'Discard changes', project_todo_lists_path, class: 'underline underline-offset-2' %></p>
+      </div>
+    <% end %>
+  </div>
+<% end %>
