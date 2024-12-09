@@ -70,4 +70,4 @@ gem "devise", "~> 4.9"
 
 gem "view_component", "~> 3.19"
 
-gem "pagy", "~> 9.1"
+gem "pagy", "~> 9.3"
