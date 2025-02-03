@@ -103,7 +103,12 @@ GEM
     factory_bot_rails (6.4.4)
       factory_bot (~> 6.5)
       railties (>= 5.0.0)
-    ffaker (2.23.0)
+    ffaker (2.24.0)
+    ffi (1.17.0-aarch64-linux-gnu)
+    ffi (1.17.0-arm-linux-gnu)
+    ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x86-linux-gnu)
+    ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -337,7 +342,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   factory_bot_rails (~> 6.4)
-  ffaker (~> 2.23)
+  ffaker (~> 2.24)
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
