@@ -54,7 +54,7 @@ group :development, :test do
 
   gem "simplecov", "~> 0.22.0"
 
-  gem "ffaker", "~> 2.23"
+  gem "ffaker", "~> 2.24"
 end
 
 group :development do
